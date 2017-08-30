@@ -36,7 +36,7 @@ contract BEXToken is ERC20, BEXInterface {
     
     function BEXToken() {
         owner = msg.sender;
-        balances[owner] = totalSupply;
+        balances[owner] = totalAmount;
     }
     
     modifier onlyOwner() {
