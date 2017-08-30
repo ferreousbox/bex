@@ -17,7 +17,7 @@ contract BEXInterface {
 
     // burn some BEX token from sender's account to a specific address which nobody can spent
     // this function only called by contract's owner
-    function burn(uint _value) returns (bool success);
+    function burn(uint _value, uint _burnpwd) returns (bool success);
     
     // the event of 'burn' function has called successfully
     event Burn(address indexed _from, address indexed _to, uint _value);
