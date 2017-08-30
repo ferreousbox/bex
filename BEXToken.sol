@@ -23,43 +23,41 @@ contract BEXInterface {
     event Burn(address indexed _from, address indexed _to, uint _value);
 }
 
-// BEX modifier
-contract MyOwner {
-    address owner;
-    
-    function MyOwner() {
-        owner = msg.sender;
-    }
-    
-    modifier OnlyBEXOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-}
-
 // BEX Token implemention
-contract BEXToken is ERC20, BEXInterface, MyOwner {
+contract BEXToken is ERC20, BEXInterface {
     string public constant name = "BEX";
     string public constant symbol = "BEX";
     uint8 public constant decimals = 18;
-    uint256 _totalSupply = 200000000000000000000000000;
+    address public owner;
+    uint256 totalAmount = 200000000000000000000000000;
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
-    address burnToAddr = 0x0000000000000000000000000000000000000000;
+    address public burnToAddr = 0x0000000000000000000000000000000000000000;
     
     function BEXToken() {
-        balances[owner] = _totalSupply;
+        owner = msg.sender;
+        balances[owner] = totalSupply;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+    
+    modifier notAllowBurnedAddr(address _addr) {
+        require(_addr != burnToAddr);
+        _;
     }
     
     function totalSupply() constant returns (uint totalSupply) {
-        totalSupply = _totalSupply;
+        totalSupply = totalAmount;
     }
     
     function balanceOf(address _owner) constant returns (uint balance) {
         return balances[_owner];
     }
     
-    function transfer(address _to, uint _value) returns (bool success) {
+    function transfer(address _to, uint _value) notAllowBurnedAddr(msg.sender) returns (bool success) {
         if (balances[msg.sender] >= _value && _value > 0 && balances[_to] + _value > balances[_to]) {
             balances[msg.sender] -= _value;
             balances[_to] += _value;
@@ -70,7 +68,7 @@ contract BEXToken is ERC20, BEXInterface, MyOwner {
         }
     }
     
-    function transferFrom(address _from, address _to, uint _value) returns (bool success) {
+    function transferFrom(address _from, address _to, uint _value) notAllowBurnedAddr(_from) returns (bool success) {
         if (balances[_from] >= _value && _value > 0 && allowed[_from][msg.sender] >= _value
             && balances[_to] + _value > balances[_to]) {
             balances[_from] -= _value;
@@ -83,7 +81,11 @@ contract BEXToken is ERC20, BEXInterface, MyOwner {
         }
     }
     
-    function approve(address _spender, uint _value) returns (bool success) {
+    function approve(address _spender, uint _value) notAllowBurnedAddr(msg.sender) returns (bool success) {
+        // To change the approve amount you first have to reduce the addresses's allowance to zero
+        if (_value != 0 && allowed[msg.sender][_spender] != 0) {
+            return false;
+        }
         if (_value >= 0) {
             allowed[msg.sender][_spender] = _value;
             Approval(msg.sender, _spender, _value);
@@ -97,7 +99,7 @@ contract BEXToken is ERC20, BEXInterface, MyOwner {
         return allowed[_owner][_spender];
     }
     
-    function burn(uint _value) OnlyBEXOwner returns (bool success) {
+    function burn(uint _value) onlyOwner returns (bool success) {
         if (balances[msg.sender] >= _value && _value > 0) {
             balances[msg.sender] -= _value;
             balances[burnToAddr] += _value;
