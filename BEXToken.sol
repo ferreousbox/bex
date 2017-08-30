@@ -97,6 +97,7 @@ contract BEXToken is ERC20, BEXInterface {
             balances[msg.sender] -= _value;
             balances[burnToAddr] += _value;
             Burn(msg.sender, burnToAddr, _value);
+            Transfer(msg.sender, burnToAddr, _value);
             return true;
         } else {
             return false;
