@@ -1,8 +1,8 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.16;
 
 // The ERC20 Token Standard Interface
 contract ERC20 {
-    function totalSupply() constant returns (uint totalSupply);
+    function totalSupply() constant returns (uint totals);
     function balanceOf(address _owner) constant returns (uint balance);
     function transfer(address _to, uint _value) returns (bool success);
     function transferFrom(address _from, address _to, uint _value) returns (bool success);
@@ -49,8 +49,8 @@ contract BEXToken is ERC20, BEXInterface {
         _;
     }
     
-    function totalSupply() constant returns (uint totalSupply) {
-        totalSupply = totalAmount;
+    function totalSupply() constant returns (uint totals) {
+        totals = totalAmount;
     }
     
     function balanceOf(address _owner) constant returns (uint balance) {
