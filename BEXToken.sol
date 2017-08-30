@@ -28,15 +28,13 @@ contract BEXToken is ERC20, BEXInterface {
     string public constant name = "BEX";
     string public constant symbol = "BEX";
     uint8 public constant decimals = 18;
-    address public owner;
-    uint256 totalAmount = 200000000000000000000000000;
+    uint256 constant totalAmount = 200000000000000000000000000;
+    address constant burnToAddr = 0x0000000000000000000000000000000000000000;
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
-    address public burnToAddr = 0x0000000000000000000000000000000000000000;
     
     function BEXToken() {
-        owner = msg.sender;
-        balances[owner] = totalAmount;
+        balances[msg.sender] = totalAmount;
     }
     
     modifier notAllowBurnedAddr(address _addr) {
@@ -45,7 +43,7 @@ contract BEXToken is ERC20, BEXInterface {
     }
     
     function totalSupply() constant returns (uint totals) {
-        totals = totalAmount;
+        return totalAmount;
     }
     
     function balanceOf(address _owner) constant returns (uint balance) {
