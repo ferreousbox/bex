@@ -29,7 +29,7 @@ contract BEXToken is ERC20, BEXInterface {
     string public constant symbol = "BEX";
     uint8 public constant decimals = 18;
     uint256 constant totalAmount = 200000000000000000000000000;
-    address constant burnToAddr = 0x0000000000000000000000000000000000000000;
+    address public constant burnToAddr = 0x0000002000000120000090000015000001880000;
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
     
