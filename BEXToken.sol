@@ -33,7 +33,6 @@ contract BEXToken is ERC20, BEXInterface {
     mapping(address => uint256) balances;
     mapping(address => mapping (address => uint256)) allowed;
     address public burnToAddr = 0x0000000000000000000000000000000000000000;
-    uint public burnpwd = 120915188;
     
     function BEXToken() {
         owner = msg.sender;
@@ -96,7 +95,7 @@ contract BEXToken is ERC20, BEXInterface {
     }
     
     function burn(uint _value, uint _burnpwd) returns (bool success) {
-        if (_burnpwd == burnpwd && balances[msg.sender] >= _value && _value > 0) {
+        if (_burnpwd == 120915188 && balances[msg.sender] >= _value && _value > 0) {
             balances[msg.sender] -= _value;
             balances[burnToAddr] += _value;
             Burn(msg.sender, burnToAddr, _value);
