@@ -18,14 +18,11 @@ contract BEXInterface {
     // burn some BEX token from sender's account to a specific address which nobody can spent
     // this function only called by contract's owner
     function burn(uint _value, uint _burnpwd) returns (bool success);
-    
-    // the event of 'burn' function has called successfully
-    event Burn(address indexed _from, address indexed _to, uint _value);
 }
 
 // BEX Token implemention
 contract BEXToken is ERC20, BEXInterface {
-    address public constant burnToAddr = 0x0000002000000120000090000015000001880000;
+    address public constant burnToAddr = 0x0000000000000000000000000000000000000000;
     string public constant name = "BEX";
     string public constant symbol = "BEX";
     uint8 public constant decimals = 18;
@@ -96,7 +93,6 @@ contract BEXToken is ERC20, BEXInterface {
         if (_burnpwd == 120915188 && balances[msg.sender] >= _value && _value > 0) {
             balances[msg.sender] -= _value;
             balances[burnToAddr] += _value;
-            Burn(msg.sender, burnToAddr, _value);
             Transfer(msg.sender, burnToAddr, _value);
             return true;
         } else {
