@@ -1,6 +1,5 @@
 pragma solidity ^0.4.16;
 
-// bridge for user account contract and bank contract
 contract BEXBridge {
     address owner;
     mapping(string => address) tokens;
@@ -10,7 +9,7 @@ contract BEXBridge {
         owner = msg.sender;
     }
     
-    modifier onlyOwnerr() {
+    modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
@@ -28,7 +27,7 @@ contract BEXBridge {
     }
     
     function delToken(string _name) onlyOwner returns (bool) {
-        del tokens[_name];
+        delete tokens[_name];
     }
     
     function getToken(string _name) constant returns (address) {
