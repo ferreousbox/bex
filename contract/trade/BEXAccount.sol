@@ -31,7 +31,7 @@ contract BEXAccount {
         require(activated == false);
         require(msg.value > 0);
         // return the fund
-        asset(withdrawAddr.call.value(msg.value)());
+        assert(withdrawAddr.call.value(msg.value)());
         activated = true;
         activateTime = now;
         activateAddr = msg.sender;
