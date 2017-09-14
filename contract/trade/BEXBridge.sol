@@ -33,4 +33,10 @@ contract BEXBridge {
     function getToken(string _name) constant returns (address) {
         return tokens[_name];
     }
+    
+    function notifyAccountActivated() {
+        NotifyAccountActivated(msg.sender);
+    }
+    
+    event NotifyAccountActivated(address indexed addr);
 }
